@@ -1,13 +1,33 @@
-const express = require('express');
-const router = new express.Router();
-const db = require('../db');
-const ExpressError = require('../expressError');
+const jwt = require("jsonwebtoken");
+const Router = require("express").Router;
+const router = new Router();
+
+const User = require("../models/user");
+const {SECRET_KEY} = require("../config");
+const ExpressError = require("../expressError");
 
 /** POST /login - login: {username, password} => {token}
  *
  * Make sure to update their last-login!
  *
  **/
+router.post("/login", async function (req, res, next) {
+    try {
+        const { username, password } = req.body;
+        if (await User.authenticate(username, password)) {
+            let token = jwt.sign({ username }, SECRET_KEY);
+            User.updateLoginTimestamp(username);
+            return res.json({ token });
+        } else {
+            throw new ExpressError("Invalid user/password", 400);
+        }
+    }
+    catch (err) {
+        return next(err)
+    }
+});
+
+
 
 
 /** POST /register - register user: registers, logs in, and returns token.
@@ -24,11 +44,14 @@ router.post("/register", async function (req, res, next) {
     try {
         let { username } = await User.register(req.body)
         let token =
-            let user = await User.register(req.body.username, req.body.password, req.body.first_name, req.body.last_name, req.body.phone)
-        return user
-    } catch (err) {
-        next(err)
+            jwt.sign({ username }, SECRET_KEY);
+        User.updateLoginTimestamp(username);
+        return res.json({ token });
     }
-})
+
+    catch (err) {
+        return next(err)
+    }
+});
 
 module.exports = router;

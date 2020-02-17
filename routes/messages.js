@@ -1,3 +1,10 @@
+
+const Router = require("express").Router;
+const router = new Router();
+
+const Message = require("../models/message");
+const { ensureLoggedIn } = require("../middleware/auth");
+const ExpressError = require("../expressError");
 /** GET /:id - get detail of message.
  *
  * => {message: {id,
@@ -11,6 +18,18 @@
  *
  **/
 
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
+  try {
+    let result = await Messages.get(req.params.id);
+    if (req.user.username !== result.from_user.username || req.user.username !== result.to_user.username) {
+      throw new ExpressError("Invalid user", 400);
+    } return res.json({ message: result });
+  }
+  catch (err) {
+    return next(err)
+  }
+})
+
 
 /** POST / - post message.
  *
@@ -18,6 +37,17 @@
  *   {message: {id, from_username, to_username, body, sent_at}}
  *
  **/
+
+router.post("/", ensureLoggedIn, async function (req, res, next) {
+  try {
+    let { message } = await Message.create(req.body);
+    return res.json({ message: message });
+
+  } catch (err) {
+    return next(err)
+  }
+});
+
 
 
 /** POST/:id/read - mark message as read:
@@ -28,3 +58,18 @@
  *
  **/
 
+router.post("/:id/read", ensureLoggedIn, async function (req, res, next) {
+  try {
+    let result = await Messages.get(req.params.id);
+    if (req.user.username === result.to_user.username) {
+     let readMsg = await Message.markRead(req.params.id);
+      return res.json({message: readMsg});
+    } else {
+      throw new ExpressError("Invalid User", 400);
+    }
+  } catch (err) {
+    return next(err)
+  }
+});
+
+module.exports = router;

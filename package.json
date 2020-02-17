@@ -20,5 +20,13 @@
     "pg": "^7.5.0",
     "supertest": "^4.0.2"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessicaelee/express--messageley.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jessicaelee/express--messageley/issues"
+  },
+  "homepage": "https://github.com/jessicaelee/express--messageley#readme",
   "description": ""
 }
