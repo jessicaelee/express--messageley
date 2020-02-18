@@ -3,8 +3,10 @@ const Router = require("express").Router;
 const router = new Router();
 
 const User = require("../models/user");
-const {SECRET_KEY} = require("../config");
+const { SECRET_KEY } = require("../config");
 const ExpressError = require("../expressError");
+
+let TOKEN;
 
 /** POST /login - login: {username, password} => {token}
  *
@@ -28,6 +30,9 @@ router.post("/login", async function (req, res, next) {
 });
 
 
+router.get("/register", async function (req, res, next) {
+    return res.render('register.html')
+})
 
 
 /** POST /register - register user: registers, logs in, and returns token.
@@ -39,14 +44,11 @@ router.post("/login", async function (req, res, next) {
 
 
 router.post("/register", async function (req, res, next) {
-    console.log("*******")
-
     try {
         let { username } = await User.register(req.body)
-        let token =
-            jwt.sign({ username }, SECRET_KEY);
+        TOKEN = jwt.sign({ username }, SECRET_KEY);
         User.updateLoginTimestamp(username);
-        return res.json({ token });
+        return res.render('messages.html');
     }
 
     catch (err) {
@@ -55,3 +57,4 @@ router.post("/register", async function (req, res, next) {
 });
 
 module.exports = router;
+exports.variableName = TOKEN;
