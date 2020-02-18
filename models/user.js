@@ -10,6 +10,7 @@ const axios = require('axios')
 
 /** User of the site. */
 
+
 class User {
 
   /** register new user -- returns

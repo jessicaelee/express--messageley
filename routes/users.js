@@ -13,6 +13,7 @@ const { ensureCorrectUser } = require('../middleware/auth')
  *
  **/
 
+
 router.get("/", ensureLoggedIn, async function (req, res, next) {
   // console.log("IIINNNNN ROUUTEE *****", req)
   try {

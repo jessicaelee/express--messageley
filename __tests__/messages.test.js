@@ -36,12 +36,6 @@ describe("Test Message class", async function () {
     });
   });
 
-  // afterEach(async function () {
-  //   await db.query("DELETE FROM messages");
-  //   await db.query("DELETE FROM users");
-  //   await db.query("ALTER SEQUENCE messages_id_seq RESTART WITH 1");
-  // })
-
   test("can create", async function () {
     let m = await Message.create({
       from_username: "test1",

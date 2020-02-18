@@ -45,11 +45,6 @@ describe("Auth Routes Test", async function () {
 
     });
 
-    // afterEach(async function () {
-    //     await db.query("DELETE FROM messages");
-    //     await db.query("DELETE FROM users");
-    // })
-
     describe('GET /users', function () {
         test('can get list of users', async function () {
 

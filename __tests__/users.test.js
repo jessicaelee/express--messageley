@@ -17,10 +17,6 @@ describe("Test User class", function () {
     });
   });
 
-  // afterEach(async function () {
-  //   await db.query("DELETE FROM messages");
-  //   await db.query("DELETE FROM users");
-  // })
 
   test("can register", async function () {
     let u = await User.register({

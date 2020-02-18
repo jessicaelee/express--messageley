@@ -21,13 +21,6 @@ describe("Auth Routes Test", async function () {
         });
     });
 
-    // afterEach(async function () {
-    //     await db.query("DELETE FROM messages");
-    //     await db.query("DELETE FROM users");
-    // })
-
-    /** POST /auth/register => token  */
-
     describe("POST /auth/register", function () {
         test("can register", async function () {
             let response = await request(app)
