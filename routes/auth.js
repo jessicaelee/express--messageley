@@ -3,7 +3,7 @@ const Router = require("express").Router;
 const router = new Router();
 
 const User = require("../models/user");
-const {SECRET_KEY} = require("../config");
+const { SECRET_KEY } = require("../config");
 const ExpressError = require("../expressError");
 
 /** POST /login - login: {username, password} => {token}
@@ -39,7 +39,6 @@ router.post("/login", async function (req, res, next) {
 
 
 router.post("/register", async function (req, res, next) {
-    console.log("*******")
 
     try {
         let { username } = await User.register(req.body)
